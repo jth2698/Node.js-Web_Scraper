@@ -4,12 +4,12 @@ const cheerio = require("cheerio");
 
 async function main() {
   const html = await request.get(
-    "https://reactnativetutorial.net/css-selectors/lesson3.html"
+    "https://reactnativetutorial.net/css-selectors/lesson5.html"
   );
 
   fs.writeFileSync("./test.html", html);
   const $ = await cheerio.load(html);
-  const red = $("#red").text()
+  const red = $(".red").text()
     console.log(red);
 }
 
