@@ -8,7 +8,9 @@ async function main() {
   fs.writeFileSync("./test.html", html);
   const $ = cheerio.load(html);
   $("body > table > tbody > tr").each((index, element) => {
-    console.log($($(element).find("td")[0]).text());
+    const tds = $(element).find("td");
+    const company = $(tds[0]).text();
+    console.log(company);
   });
 }
 
