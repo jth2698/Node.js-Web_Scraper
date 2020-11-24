@@ -43,8 +43,11 @@ async function scrapeJobDescriptions(listings, page) {
     const html = await page.content();
     const $ = cheerio.load(html);
     const jobDescription = $("#postingbody").text();
+    const compensation = $("p.attrgroup > span:nth-child(1) > b").text();
     listings[i].jobdescription = jobDescription;
+    listings[i].compensation = compensation;
     console.log(listings[i].jobdescription);
+    console.log(listings[i].compensation);
     await sleep(1000);
   }
 }
