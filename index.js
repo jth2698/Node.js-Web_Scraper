@@ -3,14 +3,13 @@ const fs = require("fs");
 const cheerio = require("cheerio");
 
 async function main() {
-  const html = await request.get(
-    "https://reactnativetutorial.net/css-selectors/lesson6.html"
-  );
+  const html = await request.get("https://codingwithstefan.com/table-example");
 
   fs.writeFileSync("./test.html", html);
-  const $ = await cheerio.load(html);
-  const red = $('[data-customer=22293]').text()
-    console.log(red);
+  const $ = cheerio.load(html);
+  $("body > table > tbody > tr > td").each((index, element) => {
+    console.log($(element).text());
+  });
 }
 
 main();
