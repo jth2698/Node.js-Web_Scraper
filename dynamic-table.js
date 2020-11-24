@@ -8,21 +8,21 @@ async function main() {
   fs.writeFileSync("./test.html", html);
   const $ = cheerio.load(html);
   const scrapedRows = [];
+  const tableHeader = [];
   $("body > table > tbody > tr").each((index, element) => {
     if (index === 0) {
+      const tblhdrs = $(element).find("th");
+      tblhdrs.each((index, element) => {
+        tableHeader.push($(element).text().toLowerCase());
+      });
       return true;
-    } else {
-      const tds = $(element).find("td");
-      const company = $(tds[0]).text();
-      const contact = $(tds[1]).text();
-      const country = $(tds[2]).text();
-      const tableInfo = {
-        company,
-        contact,
-        country,
-      };
-      scrapedRows.push(tableInfo);
     }
+    const tds = $(element).find("td");
+    const tableRow = {};
+    tds.each((index, element) => {
+      tableRow[tableHeader[index]] = $(element).text();
+    });
+    scrapedRows.push(tableRow);
   });
 
   console.log(scrapedRows);
