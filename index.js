@@ -1,31 +1,30 @@
-const request = require("request-promise");
-const fs = require("fs");
+const puppet = require("puppeteer");
 const cheerio = require("cheerio");
 
+const scrapingResults = [
+  {
+    title: "Entry Level Software Engineer - C or C++",
+    datePosted: new Date("2020-07-26-12:00:00"),
+    neighborhood: "(palo alto)",
+    url: "",
+    jobDescription: "lorem ipsum",
+    compensation: "Up to US$0.00 per year",
+  },
+];
+
 async function main() {
-  const html = await request.get("https://codingwithstefan.com/table-example");
+  const browser = await puppet.launch({ headless: false });
+  const page = await browser.newPage();
+  await page.goto(
+    "https://sfbay.craigslist.org/d/sorftware-ga-dba-etc/search/sof"
+  );
 
-  fs.writeFileSync("./test.html", html);
+  const html = await page.content();
   const $ = cheerio.load(html);
-  const scrapedRows = [];
-  $("body > table > tbody > tr").each((index, element) => {
-    if (index === 0) {
-      return true;
-    } else {
-      const tds = $(element).find("td");
-      const company = $(tds[0]).text();
-      const contact = $(tds[1]).text();
-      const country = $(tds[2]).text();
-      const tableInfo = {
-        company,
-        contact,
-        country,
-      };
-      scrapedRows.push(tableInfo);
-    }
-  });
 
-  console.log(scrapedRows);
+  $(".result-title").each((index, element) => {
+    console.log($(element).text());
+  });
 }
 
 main();
