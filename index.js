@@ -1,5 +1,6 @@
 const puppet = require("puppeteer");
 const cheerio = require("cheerio");
+const { initParams } = require("request-promise");
 
 const scrapingResults = [
   {
@@ -12,9 +13,7 @@ const scrapingResults = [
   },
 ];
 
-async function main() {
-  const browser = await puppet.launch({ headless: false });
-  const page = await browser.newPage();
+async function scrapeListings(page) {
   await page.goto(
     "https://sfbay.craigslist.org/d/sorftware-ga-dba-etc/search/sof"
   );
@@ -22,18 +21,35 @@ async function main() {
   const html = await page.content();
   const $ = cheerio.load(html);
 
-  const results = $(".result-info")
+  const listings = $(".result-info")
     .map((index, element) => {
       const titleEl = $(element).find(".result-title");
       const timeEl = $(element).find(".result-date");
+      const hoodEl = $(element).find(".result-hood");
       const title = $(titleEl).text();
       const datePosted = new Date($(timeEl).attr("datetime"));
       const url = $(titleEl).attr("href");
-      return { title, datePosted, url };
+      const hood = $(hoodEl).text().trim().replace("(", "").replace(")", "");
+      return { title, datePosted, hood, url };
     })
     .get();
 
-  console.log(results);
+  return listings;
 }
 
-main();
+async function scrapeJobDescriptions(listings, page) {
+  for (let i = 0; i < listings.length; i++) {
+    await page.goto(listings[i].url);
+    const html = await page.content();
+  }
+}
+
+async function init() {
+  const browser = await puppet.launch({ headless: false });
+  const page = await browser.newPage();
+  const listings = await scrapeListings(page);
+  const jobDescrips = await scrapeJobDescriptions(listings, page);
+  console.log(listings);
+}
+
+init();
