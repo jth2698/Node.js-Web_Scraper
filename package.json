@@ -1,0 +1,25 @@
+{
+  "name": "node.js-web_scraper",
+  "version": "1.0.0",
+  "description": "\"A node/express app to scrape web pages\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etorres-revature/Node.js-Web_Scraper.git"
+  },
+  "keywords": [
+    "Node",
+    "express",
+    "web",
+    "scraper"
+  ],
+  "author": "Eric D. Torres",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/etorres-revature/Node.js-Web_Scraper/issues"
+  },
+  "homepage": "https://github.com/etorres-revature/Node.js-Web_Scraper#readme"
+}
