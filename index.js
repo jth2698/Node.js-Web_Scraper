@@ -7,11 +7,21 @@ async function main() {
 
   fs.writeFileSync("./test.html", html);
   const $ = cheerio.load(html);
+  const scrapedRows = [];
   $("body > table > tbody > tr").each((index, element) => {
     const tds = $(element).find("td");
     const company = $(tds[0]).text();
-    console.log(company);
+    const contact = $(tds[1]).text();
+    const country = $(tds[2]).text();
+    const tableInfo = {
+      company,
+      contact,
+      country,
+    };
+    scrapedRows.push(tableInfo);
   });
+
+  console.log(scrapedRows);
 }
 
 main();
