@@ -1,3 +1,3 @@
 module.exports = {
-  Listing: require("./Listing"),
+  Contract: require("./Contract"),
 };
